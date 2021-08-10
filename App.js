@@ -13,9 +13,13 @@ import SettingsScreen from "./containers/SettingsScreen";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+/* const apiUrl = "http://localhost:3001"; */
+const apiUrl = "https://express-airbnb-api.herokuapp.com";
+
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   const setToken = async (token) => {
     if (token) {
@@ -25,6 +29,15 @@ export default function App() {
     }
 
     setUserToken(token);
+  };
+
+  const setId = async (id) => {
+    if (id) {
+      AsyncStorage.setItem("userId", id);
+    } else {
+      AsyncStorage.removeItem("userId");
+    }
+    setUserId(id);
   };
 
   useEffect(() => {
@@ -48,10 +61,14 @@ export default function App() {
         // No token found, user isn't signed in
         <Stack.Navigator>
           <Stack.Screen name="SignIn">
-            {() => <SignInScreen setToken={setToken} />}
+            {() => (
+              <SignInScreen setId={setId} setToken={setToken} apiUrl={apiUrl} />
+            )}
           </Stack.Screen>
           <Stack.Screen name="SignUp">
-            {() => <SignUpScreen setToken={setToken} />}
+            {() => (
+              <SignUpScreen setId={setId} setToken={setToken} apiUrl={apiUrl} />
+            )}
           </Stack.Screen>
         </Stack.Navigator>
       ) : (
@@ -93,7 +110,9 @@ export default function App() {
                           title: "User Profile",
                         }}
                       >
-                        {() => <ProfileScreen />}
+                        {() => (
+                          <ProfileScreen setId={setId} setToken={setToken} />
+                        )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}

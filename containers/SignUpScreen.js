@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/core";
+import axios from "axios";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -8,12 +10,17 @@ import {
   Image,
   SafeAreaView,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 
-export default function SignUpScreen({ setToken }) {
+import { Entypo } from "@expo/vector-icons";
+
+export default function SignUpScreen({ setToken, setId, apiUrl }) {
+  const navigation = useNavigation();
+
   const [email, onChangeEmail] = useState("");
   const [username, onChangeUsername] = useState("");
   const [description, onChangeDescription] = useState("");
@@ -21,33 +28,58 @@ export default function SignUpScreen({ setToken }) {
   const [confirmPassword, onChangeConfirmPassword] = useState("");
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorSamePassword, setErrorSamePassword] = useState(false);
+  const [emptyFields, setEmptyFields] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [userExist, setUserExist] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const isEmailValid = (userEmail) => {
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return reg.test(userEmail) == 0;
+  };
 
   const handleSubmit = async () => {
-    try {
-      if (password !== confirmPassword) {
-        setErrorSamePassword(true);
-      } else {
-        const response = await axios.post(
-          "https://le-reacteur-rn-airbnb-backend.herokuapp.com/user/sign_up",
-          { email, username, description, password }
-        );
+    if (email && username && description && password && confirmPassword) {
+      try {
+        const response = await axios.post(`${apiUrl}/user/sign_up`, {
+          email,
+          username,
+          description,
+          password,
+        });
+        alert("Congratulations ! You are registred and you can Sign In");
         console.log(response.data);
 
         if (response.data.token) {
           setToken(response.data.token);
-          // TODO déclarer setId dans App.js (comme setToken)et ajouter la props dans SignUpScreen
-          /* setId(response.data.id); */
+          setId(response.data.id);
+          setIsLoading(false);
         }
+      } catch (error) {
+        /*         if (error.reponse.data.username || error.response.data.email) {
+            setUserExist(true);
+          } */
+        setUserExist(true);
+        /* console.log(error.response); */
+        console.log(error.message);
       }
-    } catch (error) {
-      alert(error.message);
+    } else {
+      setEmptyFields(true);
+    }
+    if (password !== confirmPassword) {
+      setErrorSamePassword(true);
     }
   };
 
-  return (
+  return !isLoading ? (
+    <View style={[styles.container, styles.horizontal]}>
+      <ActivityIndicator size="large" color="#FF9AA2" />
+    </View>
+  ) : (
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView>
-        <StatusBar style="transparent" />
+        <StatusBar translucent backgroundColor="transparent" />
         <View style={[styles.logo]}>
           <Image
             style={{ height: 70, width: 80 }}
@@ -65,6 +97,8 @@ export default function SignUpScreen({ setToken }) {
 
             /* autoFocus={true} */
           />
+          {errorEmail && <Text>error</Text>}
+
           <TextInput
             style={username.length > 0 ? styles.focusedTextInput : styles.input}
             placeholder="Username"
@@ -83,42 +117,84 @@ export default function SignUpScreen({ setToken }) {
             numberOfLines={4}
             onChangeText={onChangeDescription}
           />
-          <TextInput
-            style={password.length > 0 ? styles.focusedTextInput : styles.input}
-            placeholder="Password"
-            secureTextEntry={true}
-            value={password}
-            onChangeText={onChangePassword}
-          />
-          <TextInput
-            style={
-              confirmPassword.length > 0
-                ? styles.focusedTextInput
-                : styles.input
-            }
-            placeholder="Confirm password"
-            secureTextEntry={true}
-            value={confirmPassword}
-            onChangeText={onChangeConfirmPassword}
-          />
+          <View style={[styles.password]}>
+            <TextInput
+              style={
+                password.length > 0 ? styles.focusedTextInput : styles.input
+              }
+              placeholder="Password"
+              /* secureTextEntry={secure} */
+              secureTextEntry={!showPassword ? true : false}
+              value={password}
+              onChangeText={onChangePassword}
+            />
+            {showPassword ? (
+              <Entypo
+                name="eye"
+                size={14}
+                color="black"
+                onPress={() => setShowPassword(false)}
+                style={[styles.passwordEye]}
+              />
+            ) : (
+              <Entypo
+                name="eye-with-line"
+                size={14}
+                color="black"
+                onPress={() => setShowPassword(true)}
+                style={[styles.passwordEye]}
+              />
+            )}
+          </View>
+          <View style={[styles.password]}>
+            <TextInput
+              style={
+                confirmPassword.length > 0
+                  ? styles.focusedTextInput
+                  : styles.input
+              }
+              placeholder="Confirm password"
+              secureTextEntry={!showConfirmPassword ? true : false}
+              value={confirmPassword}
+              onChangeText={onChangeConfirmPassword}
+            />
+            {showConfirmPassword ? (
+              <Entypo
+                name="eye"
+                size={14}
+                color="black"
+                onPress={() => setShowConfirmPassword(false)}
+                style={[styles.passwordEye]}
+              />
+            ) : (
+              <Entypo
+                name="eye-with-line"
+                size={14}
+                color="black"
+                onPress={() => setShowConfirmPassword(true)}
+                style={[styles.passwordEye]}
+              />
+            )}
+          </View>
+          {emptyFields && (
+            <Text style={styles.emptyFields}>All fields are required !</Text>
+          )}
           {errorSamePassword && (
             <Text style={styles.errorSamePassword}>
               Passwords must be the same
             </Text>
           )}
+          {userExist && (
+            <Text style={styles.userExist}>An account already exist !</Text>
+          )}
+          {isLoading && (
+            <View style={styles.btnContainer}>
+              <TouchableOpacity style={styles.btnSignup} onPress={handleSubmit}>
+                <Text style={styles.btnSignupText}>Sign Up</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
-          {/*         <Button
-          title="Sign up"
-          onPress={async () => {
-            const userToken = "secret-token";
-            setToken(userToken);
-          }}
-        /> */}
-          <View style={styles.btnContainer}>
-            <TouchableOpacity style={styles.btnSignup} onPress={handleSubmit}>
-              <Text style={styles.btnSignupText}>Sign Up</Text>
-            </TouchableOpacity>
-          </View>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("SignIn");
@@ -162,6 +238,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#FF9AA2",
     borderBottomWidth: 2,
     marginBottom: 20,
+    flex: 1,
   },
   focusedTextareaInput: {
     borderColor: "#FF9AA2",
@@ -177,6 +254,15 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
     padding: 8,
   },
+  password: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  passwordEye: {
+    marginRight: 20,
+    paddingBottom: 20,
+  },
   btnContainer: {
     alignItems: "center",
     justifyContent: "center",
@@ -187,6 +273,18 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     height: 50,
     width: 200,
+  },
+  emptyFields: {
+    color: "red",
+    textAlign: "center",
+    marginTop: 30,
+    marginBottom: 10,
+  },
+  userExist: {
+    color: "red",
+    textAlign: "center",
+    marginTop: 30,
+    marginBottom: 10,
   },
   errorSamePassword: {
     color: "red",
@@ -205,5 +303,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     margin: 20,
     color: "#898989",
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
 });
