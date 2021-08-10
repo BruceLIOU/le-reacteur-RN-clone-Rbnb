@@ -49,7 +49,7 @@
 
 Clone Airbnb create with REACT NATIVE
 
-## :img: Screenshots ##
+## 📷[!img-screenshots] Screenshots ##
 
 <p align="center">
 <img
