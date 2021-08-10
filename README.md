@@ -34,7 +34,7 @@
 
 <p align="center">
   <a href="#dart-about">About</a> &#xa0; | &#xa0; 
-  <a href="#screenshots">Screenshots</a> &#xa0; | &#xa0; 
+  <a href="#img-screenshots">Screenshots</a> &#xa0; | &#xa0; 
   <a href="#sparkles-features">Features</a> &#xa0; | &#xa0;
   <a href="#rocket-technologies">Technologies</a> &#xa0; | &#xa0;
   <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
@@ -49,8 +49,9 @@
 
 Clone Airbnb create with REACT NATIVE
 
-## :screenshots: Screenshots ##
+## :img: Screenshots ##
 
+<p align="center">
 <img
 		width="210"
 		alt="Capture 1"
@@ -59,10 +60,9 @@ Clone Airbnb create with REACT NATIVE
 		width="210"
 		alt="Capture 2"
 		src="https://github.com/BruceLIOU/le-reacteur-RN-clone-Rbnb/blob/main/_preview/signup.png">
-<img
-		width="210"
-		alt="Capture 3"
-		src="https://github.com/BruceLIOU/le-reacteur-RN-clone-Rbnb/blob/main/_preview/room.png">
+</p>
+
+<br>
 
 ## :sparkles: Features ##
 
