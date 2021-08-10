@@ -103,7 +103,7 @@ $ yarn or npm
 # Run the project
 $ yarn start or expo start
 
-# The server will initialize in the <http://localhost:3000>
+# The server will initialize in the <http://localhost:3001>
 ```
 
 ## :memo: License ##
