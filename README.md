@@ -1,5 +1,5 @@
 <div align="center" id="top"> 
-  <img src="./_preview/Airbnb_Logo.jpg" alt="Clone Airbnb - REACT NATIVE" />
+  <img src="./_preview/preview_app.gif" alt="Clone Airbnb - REACT NATIVE" />
 
   &#xa0;
 
