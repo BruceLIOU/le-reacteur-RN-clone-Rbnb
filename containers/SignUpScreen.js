@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
-    /* marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0, */
+    marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
   },
   logo: {
     alignItems: "center",
