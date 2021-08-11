@@ -53,7 +53,8 @@ export default function SignInScreen({ setToken, setId, apiUrl }) {
         }
       } catch (error) {
         setErrorMessage(true);
-        console.log(error.message);
+        console.log(error.response.data.error);
+        console.log(Object.keys(error.response.data));
       }
     } else {
       setEmptyFields(true);
@@ -126,7 +127,7 @@ export default function SignInScreen({ setToken, setId, apiUrl }) {
           <View style={{ height: 40, marginBottom: 20 }}>
             {errorMessage && (
               <Text style={styles.errorMessage}>
-                Email or Password are wrong !
+                Email or Password is incorrect !
               </Text>
             )}
           </View>
@@ -225,6 +226,10 @@ const styles = StyleSheet.create({
     color: "#898989",
     justifyContent: "center",
     borderColor: "red",
+  },
+  errorMessage: {
+    textAlign: "center",
+    color: "red",
   },
   horizontal: {
     flexDirection: "row",
