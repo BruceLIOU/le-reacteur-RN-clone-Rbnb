@@ -57,6 +57,7 @@ export default function SignUpScreen({ setToken, setId, apiUrl }) {
           if (response.data.token) {
             setToken(response.data.token);
             setId(response.data.id);
+            setIsLoading(false);
           }
         }
       } catch (error) {
