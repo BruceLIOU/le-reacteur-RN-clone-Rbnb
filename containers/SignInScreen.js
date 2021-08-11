@@ -106,7 +106,6 @@ export default function SignInScreen({ setToken, setId, apiUrl }) {
                   size={14}
                   color="black"
                   onPress={() => setShowPassword(false)}
-                  style={[styles.passwordEye]}
                 />
               ) : (
                 <Entypo
@@ -114,7 +113,6 @@ export default function SignInScreen({ setToken, setId, apiUrl }) {
                   size={14}
                   color="black"
                   onPress={() => setShowPassword(true)}
-                  style={[styles.passwordEye]}
                 />
               )}
             </View>
@@ -193,10 +191,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
-  },
-  passwordEye: {
-    marginRight: 20,
-    paddingBottom: 20,
   },
   btnContainer: {
     alignItems: "center",

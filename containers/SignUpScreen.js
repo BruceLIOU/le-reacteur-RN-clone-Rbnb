@@ -305,7 +305,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   passwordEye: {
-    marginRight: 20,
     paddingBottom: 20,
   },
   btnContainer: {
