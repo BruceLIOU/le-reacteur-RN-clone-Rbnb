@@ -8,6 +8,7 @@ import HomeScreen from "./containers/HomeScreen";
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
+import RoomScreen from "./containers/RoomScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 
 const Tab = createBottomTabNavigator();
@@ -106,7 +107,14 @@ export default function App() {
                       >
                         {() => <HomeScreen apiUrl={apiUrl} />}
                       </Stack.Screen>
-
+                      <Stack.Screen
+                        name="Room"
+                        options={{
+                          headerShown: false,
+                        }}
+                      >
+                        {() => <RoomScreen apiUrl={apiUrl} />}
+                      </Stack.Screen>
                       <Stack.Screen
                         name="Profile"
                         options={{

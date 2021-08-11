@@ -16,6 +16,9 @@ import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import { Entypo } from "@expo/vector-icons";
 
+/* import LoaderLottie from "../components/LoaderLottie";
+import LottieView from "lottie-react-native"; */
+
 export default function HomeScreen({ apiUrl }) {
   const [selectedId, setSelectedId] = useState(null);
   const [data, setData] = useState([]);
@@ -63,6 +66,12 @@ export default function HomeScreen({ apiUrl }) {
     fetchData();
   }, []);
 
+  const handlePress = (idRoom) => {
+    setSelectedId(idRoom);
+    navigation.navigate("Room", { id: idRoom });
+    /* console.log(idRoom); */
+  };
+
   const Item = ({ item, onPress, style }) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
       <ImageBackground
@@ -97,7 +106,7 @@ export default function HomeScreen({ apiUrl }) {
     return (
       <Item
         item={item}
-        onPress={() => setSelectedId(item.id)}
+        onPress={() => handlePress(item._id)}
         style={styles.card}
       />
     );
@@ -106,6 +115,12 @@ export default function HomeScreen({ apiUrl }) {
   return isLoading ? (
     <View style={[styles.container, styles.horizontal]}>
       <ActivityIndicator size="large" color="#FF9AA2" />
+      {/* <LoaderLottie /> */}
+      {/*       <LottieView
+        source={require("../assets/lf20_j1duSs.json")}
+        autoPlay
+        loop
+      /> */}
     </View>
   ) : (
     <SafeAreaView style={styles.container}>
