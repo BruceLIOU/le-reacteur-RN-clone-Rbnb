@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#FF9AA2",
     borderBottomWidth: 2,
     marginBottom: 20,
-    flex: 1,
+    width: 300,
   },
 
   password: {

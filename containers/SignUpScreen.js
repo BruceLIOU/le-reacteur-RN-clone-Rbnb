@@ -238,14 +238,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#FF9AA2",
     borderBottomWidth: 2,
     marginBottom: 20,
-    flex: 1,
-  },
-  focusedTextareaInput: {
-    borderColor: "#FF9AA2",
-    borderWidth: 2,
-    textAlignVertical: "top",
-    padding: 8,
-    marginBottom: 20,
+    width: 300,
   },
   textarea: {
     marginBottom: 20,
@@ -253,6 +246,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     textAlignVertical: "top",
     padding: 8,
+  },
+  focusedTextareaInput: {
+    borderColor: "#FF9AA2",
+    borderWidth: 2,
+    textAlignVertical: "top",
+    padding: 8,
+    marginBottom: 20,
   },
   password: {
     flexDirection: "row",
