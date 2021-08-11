@@ -70,7 +70,7 @@ export default function SignInScreen({ setToken, setId, apiUrl }) {
         <StatusBar translucent backgroundColor="transparent" />
         <View style={[styles.logo]}>
           <Image
-            style={{ height: 70, width: 80 }}
+            style={{ height: 90, width: 100 }}
             source={require("../assets/logo.png")}
             resizeMode="contain"
           />
@@ -166,8 +166,9 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   titleScreen: {
-    fontSize: 18,
+    fontSize: 24,
     paddingTop: 20,
+    color: "#717171",
   },
   formSignIn: {
     justifyContent: "center",
