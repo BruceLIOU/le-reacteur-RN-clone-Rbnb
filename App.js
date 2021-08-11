@@ -101,9 +101,10 @@ export default function App() {
                           title: "My App",
                           headerStyle: { backgroundColor: "red" },
                           headerTitleStyle: { color: "white" },
+                          headerShown: false,
                         }}
                       >
-                        {() => <HomeScreen />}
+                        {() => <HomeScreen apiUrl={apiUrl} />}
                       </Stack.Screen>
 
                       <Stack.Screen
