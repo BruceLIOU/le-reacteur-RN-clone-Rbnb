@@ -70,7 +70,8 @@ Clone Airbnb create with REACT NATIVE
 Sign up;\
 :heavy_check_mark: Feature 2;\
 Sign in:\
-:heavy_check_mark: Feature 3;
+:heavy_check_mark: Feature 3;\
+// TODO components (logo/input/btn)
 
 ## :rocket: Technologies ##
 

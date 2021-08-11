@@ -31,7 +31,8 @@ export default function SignUpScreen({ setToken, setId, apiUrl }) {
   const [emptyFields, setEmptyFields] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [userExist, setUserExist] = useState(false);
+  const [userEmailExist, setUserEmailExist] = useState(false);
+  const [userNameExist, setUserNameExist] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const isEmailValid = (userEmail) => {
@@ -42,33 +43,36 @@ export default function SignUpScreen({ setToken, setId, apiUrl }) {
   const handleSubmit = async () => {
     if (email && username && description && password && confirmPassword) {
       try {
-        const response = await axios.post(`${apiUrl}/user/sign_up`, {
-          email,
-          username,
-          description,
-          password,
-        });
-        alert("Congratulations ! You are registred and you can Sign In");
-        console.log(response.data);
+        if (password !== confirmPassword) {
+          setErrorSamePassword(true);
+        } else {
+          const response = await axios.post(`${apiUrl}/user/sign_up`, {
+            email,
+            username,
+            description,
+            password,
+          });
+          console.log(response.data);
 
-        if (response.data.token) {
-          setToken(response.data.token);
-          setId(response.data.id);
-          setIsLoading(false);
+          if (response.data.token) {
+            setToken(response.data.token);
+            setId(response.data.id);
+          }
         }
       } catch (error) {
-        /*         if (error.reponse.data.username || error.response.data.email) {
-            setUserExist(true);
-          } */
-        setUserExist(true);
-        /* console.log(error.response); */
+        if (
+          error.response.data.error === "This email already has an account."
+        ) {
+          setUserEmailExist(true);
+        } else if (
+          error.response.data.error === "This username already has an account."
+        ) {
+          setUserNameExist(true);
+        }
         console.log(error.message);
       }
     } else {
       setEmptyFields(true);
-    }
-    if (password !== confirmPassword) {
-      setErrorSamePassword(true);
     }
   };
 
@@ -94,6 +98,8 @@ export default function SignUpScreen({ setToken, setId, apiUrl }) {
             placeholder="Email"
             value={email}
             onChangeText={onChangeEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
 
             /* autoFocus={true} */
           />
@@ -184,8 +190,15 @@ export default function SignUpScreen({ setToken, setId, apiUrl }) {
               Passwords must be the same
             </Text>
           )}
-          {userExist && (
-            <Text style={styles.userExist}>An account already exist !</Text>
+          {userEmailExist && (
+            <Text style={styles.userExist}>
+              This email already has an account !
+            </Text>
+          )}
+          {userNameExist && (
+            <Text style={styles.userExist}>
+              This username already has an account !
+            </Text>
           )}
           {isLoading && (
             <View style={styles.btnContainer}>

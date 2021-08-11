@@ -66,7 +66,10 @@ export default function SignInScreen({ setToken, setId, apiUrl }) {
     </View>
   ) : (
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollViewContent}
+      >
         <StatusBar translucent backgroundColor="transparent" />
         <View style={[styles.logo]}>
           <Image
@@ -82,6 +85,8 @@ export default function SignInScreen({ setToken, setId, apiUrl }) {
             placeholder="Email"
             value={email}
             onChangeText={onChangeEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
 
             /* autoFocus={true} */
           />
@@ -149,14 +154,23 @@ export default function SignInScreen({ setToken, setId, apiUrl }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
+    /* alignItems: "center", */
+    /* backgroundColor: "white", */
     marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
+  },
+  scrollView: {
+    backgroundColor: "white",
+    flex: 1,
+  },
+  scrollViewContent: {
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   logo: {
     alignItems: "center",
+    justifyContent: "space-between",
     padding: 24,
+    flex: 1,
   },
   titleScreen: {
     fontSize: 18,
@@ -164,6 +178,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flex: 1,
+    justifyContent: "space-between",
   },
   input: {
     borderBottomColor: "#FFCDD1",
@@ -190,6 +205,7 @@ const styles = StyleSheet.create({
   btnContainer: {
     alignItems: "center",
     justifyContent: "center",
+    flex: 1,
   },
   btnSignin: {
     borderColor: "#FB8D91",
