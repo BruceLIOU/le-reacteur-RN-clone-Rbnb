@@ -120,7 +120,7 @@ export default function SignInScreen({ setToken, setId, apiUrl }) {
               />
             )}
           </View>
-          <View>
+          <View style={{ height: 40, marginBottom: 20 }}>
             {emptyFields && (
               <Text style={styles.emptyFields}>Please fill all fields !</Text>
             )}

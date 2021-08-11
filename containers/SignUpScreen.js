@@ -183,24 +183,32 @@ export default function SignUpScreen({ setToken, setId, apiUrl }) {
               />
             )}
           </View>
-          {emptyFields && (
-            <Text style={styles.emptyFields}>All fields are required !</Text>
-          )}
-          {errorSamePassword && (
-            <Text style={styles.errorSamePassword}>
-              Passwords must be the same
-            </Text>
-          )}
-          {userEmailExist && (
-            <Text style={styles.userExist}>
-              This email already has an account !
-            </Text>
-          )}
-          {userNameExist && (
-            <Text style={styles.userExist}>
-              This username already has an account !
-            </Text>
-          )}
+          <View style={{ height: 20, marginBottom: 20 }}>
+            {emptyFields && (
+              <Text style={styles.emptyFields}>All fields are required !</Text>
+            )}
+          </View>
+          <View style={{ height: 20, marginBottom: 20 }}>
+            {errorSamePassword && (
+              <Text style={styles.errorSamePassword}>
+                Passwords must be the same
+              </Text>
+            )}
+          </View>
+          <View style={{ height: 20, marginBottom: 20 }}>
+            {userEmailExist && (
+              <Text style={styles.userExist}>
+                This email already has an account !
+              </Text>
+            )}
+          </View>
+          <View style={{ height: 20, marginBottom: 20 }}>
+            {userNameExist && (
+              <Text style={styles.userExist}>
+                This username already has an account !
+              </Text>
+            )}
+          </View>
           {isLoading && (
             <View style={styles.btnContainer}>
               <TouchableOpacity style={styles.btnSignup} onPress={handleSubmit}>
