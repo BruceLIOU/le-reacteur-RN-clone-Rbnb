@@ -60,6 +60,14 @@ Clone Airbnb create with REACT NATIVE
 		width="210"
 		alt="Capture 2"
 		src="https://github.com/BruceLIOU/le-reacteur-RN-clone-Rbnb/blob/main/_preview/signup.png">
+    <img
+		width="210"
+		alt="Capture 3"
+		src="https://github.com/BruceLIOU/le-reacteur-RN-clone-Rbnb/blob/main/_preview/home.png">
+    <img
+		width="210"
+		alt="Capture 4"
+		src="https://github.com/BruceLIOU/le-reacteur-RN-clone-Rbnb/blob/main/_preview/room.png">
 </p>
 
 <br>
