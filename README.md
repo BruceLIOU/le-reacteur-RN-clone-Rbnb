@@ -71,7 +71,10 @@ Sign up;\
 :heavy_check_mark: Feature 2;\
 Sign in:\
 :heavy_check_mark: Feature 3;\
-// TODO components (logo/input/btn)
+Home:\
+:heavy_check_mark: Feature 3;\
+Rooms & Room/id:\
+// TODO components (logo/input/btn/stars)
 
 ## :rocket: Technologies ##
 
