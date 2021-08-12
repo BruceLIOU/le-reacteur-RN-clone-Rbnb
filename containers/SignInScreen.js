@@ -21,8 +21,8 @@ import { Entypo } from "@expo/vector-icons";
 export default function SignInScreen({ setToken, setId, apiUrl }) {
   const navigation = useNavigation();
 
-  const [email, onChangeEmail] = useState("nono@airbnb-api.com");
-  const [password, onChangePassword] = useState("pass");
+  const [email, onChangeEmail] = useState("");
+  const [password, onChangePassword] = useState("");
   const [emptyFields, setEmptyFields] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
