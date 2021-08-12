@@ -8,12 +8,14 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   SafeAreaView,
-  ImageBackground,
   Image,
+  Dimensions,
+  ScrollView,
 } from "react-native";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import { Entypo, AntDesign } from "@expo/vector-icons";
+import { SwiperFlatList } from "react-native-swiper-flatlist";
 
 export default function RoomScreen({ apiUrl }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -62,7 +64,7 @@ export default function RoomScreen({ apiUrl }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${apiUrl}/rooms/${params.id}`);
-        /* console.log(response.data); */
+        console.log(response.data);
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -74,91 +76,108 @@ export default function RoomScreen({ apiUrl }) {
     fetchData();
   }, [params.id]);
 
+  const renderItem = ({ item }) => {
+    return <Image style={styles.img} source={{ uri: item.url }} />;
+  };
+
   return isLoading ? (
     <View style={[styles.container, styles.horizontal]}>
       <ActivityIndicator size="large" color="#FF9AA2" />
     </View>
   ) : (
-    <SafeAreaView style={styles.container}>
-      <StatusBar translucent backgroundColor="transparent" />
-
-      <View style={styles.logoContainer}>
-        <AntDesign
-          style={styles.goBack}
-          name="arrowleft"
-          size={24}
-          color="black"
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-        <View style={styles.logo}>
-          <Image
-            style={{ height: 50, width: 60 }}
-            source={require("../assets/logo.png")}
-            resizeMode="contain"
-          />
-        </View>
-      </View>
-      <View style={styles.imgContainer}>
-        <ImageBackground
-          style={styles.imgRoom}
-          source={{ uri: data.photos[0].url }}
-        >
-          <View style={styles.priceView}>
-            <Text style={styles.price}>{data.price} €</Text>
-          </View>
-        </ImageBackground>
-      </View>
-      <View style={styles.titleContainer}>
-        <View style={styles.itemContainer}>
-          <Text style={styles.title} numberOfLines={1}>
-            {data.title}
-          </Text>
-          <Stars rating={data.ratingValue} reviews={data.reviews} />
-        </View>
-        <View style={styles.itemContainer}>
-          <Image
-            style={styles.profileImg}
-            source={{ uri: data.user.account.photo.url }}
-          />
-        </View>
-      </View>
-      <View style={styles.descriptionContainer}>
-        <Text style={styles.description} numberOfLines={viewMore}>
-          {data.description}
-        </Text>
-
-        {viewMore === 3 ? (
-          <TouchableOpacity
+    <ScrollView contentContainerStyle={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar translucent backgroundColor="transparent" />
+        <View style={styles.logoContainer}>
+          <AntDesign
+            style={styles.goBack}
+            name="arrowleft"
+            size={24}
+            color="black"
             onPress={() => {
-              setViewMore(10);
+              navigation.goBack();
+              console.log("goback");
             }}
-          >
-            <Text style={styles.showDescription}>
-              Show more <AntDesign name="caretdown" size={12} color="grey" />
+          />
+          <View style={styles.logo}>
+            <Image
+              style={{ height: 50, width: 60 }}
+              source={require("../assets/logo.png")}
+              resizeMode="contain"
+            />
+          </View>
+        </View>
+        <View style={styles.imgContainer}>
+          <SwiperFlatList
+            showPagination
+            data={data.photos}
+            renderItem={({ item }) => (
+              <View style={{ width, justifyContent: "center" }}>
+                <Image
+                  source={{
+                    uri: item.url,
+                  }}
+                  key={item.picture_id}
+                  resizeMode="cover"
+                  style={styles.cardImage}
+                />
+                <View style={styles.priceView}>
+                  <Text style={styles.price}>{data.price} €</Text>
+                </View>
+              </View>
+            )}
+          ></SwiperFlatList>
+        </View>
+        <View style={styles.titleContainer}>
+          <View style={styles.itemContainer}>
+            <Text style={styles.title} numberOfLines={1}>
+              {data.title}
             </Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={() => setViewMore(3)}>
-            <Text style={styles.showDescription}>
-              Show less <AntDesign name="caretup" size={12} color="grey" />
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View>
-      {viewMore === 10 && <View></View>}
-      <View style={styles.mapContainer}>
-        <Image
-          style={{ height: 250 }}
-          source={require("../assets/map.jpg")}
-          resizeMode="cover"
-        />
-      </View>
-    </SafeAreaView>
+            <Stars rating={data.ratingValue} reviews={data.reviews} />
+          </View>
+          <View style={styles.itemContainer}>
+            <Image
+              style={styles.profileImg}
+              source={{ uri: data.user.account.photo.url }}
+            />
+          </View>
+        </View>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.description} numberOfLines={viewMore}>
+            {data.description}
+          </Text>
+
+          {viewMore === 3 ? (
+            <TouchableOpacity
+              onPress={() => {
+                setViewMore(10);
+              }}
+            >
+              <Text style={styles.showDescription}>
+                Show more <AntDesign name="caretdown" size={12} color="grey" />
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => setViewMore(3)}>
+              <Text style={styles.showDescription}>
+                Show less <AntDesign name="caretup" size={12} color="grey" />
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
+        {viewMore === 10 && <View style={styles.separator}></View>}
+        <View style={styles.mapContainer}>
+          <Image
+            style={{ height: 300 }}
+            source={require("../assets/map.jpg")}
+            resizeMode="cover"
+          />
+        </View>
+      </SafeAreaView>
+    </ScrollView>
   );
 }
-
+const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -168,6 +187,7 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
     borderBottomColor: "red",
     borderBottomWidth: 1,
+    marginTop: 40,
   },
   logoContainer: {
     flex: 1,
@@ -177,23 +197,30 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: 400,
     flexDirection: "row",
-    maxHeight: 50,
+    maxHeight: 20,
     marginLeft: 4,
   },
   goBack: {
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+    height: 40,
+    justifyContent: "center",
+    paddingBottom: 20,
   },
   logo: {
-    marginLeft: 140,
+    flex: 1,
+    alignItems: "center",
+    marginLeft: -40,
+    marginTop: -30,
   },
   imgContainer: {
-    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
     marginHorizontal: 15,
   },
-  imgRoom: {
-    height: 250,
-    width: 400,
+  child: { width, justifyContent: "center" },
+  text: { fontSize: width * 0.5, textAlign: "center" },
+  cardImage: {
+    height: 210,
+    width: 360,
   },
   priceView: {
     height: 40,
@@ -209,10 +236,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   titleContainer: {
-    flex: 1,
     flexDirection: "row",
     marginLeft: 20,
-    marginTop: 100,
   },
   itemContainer: {
     justifyContent: "center",
@@ -226,7 +251,6 @@ const styles = StyleSheet.create({
   starsContainer: {
     flexDirection: "row",
     flex: 1,
-    /* alignItems: "center", */
     maxHeight: 20,
   },
   starRating: {
@@ -262,7 +286,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    maxHeight: 200,
+  },
+  separator: {
+    height: 120,
   },
   horizontal: {
     flexDirection: "row",
