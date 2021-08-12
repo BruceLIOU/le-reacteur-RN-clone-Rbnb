@@ -19,7 +19,7 @@ import { StatusBar } from "expo-status-bar";
 
 import { Entypo } from "@expo/vector-icons";
 
-export default function SignUpScreen({ setToken, setId, apiUrl }) {
+export default function SignUpScreen({ setToken, apiUrl }) {
   const navigation = useNavigation();
 
   const [email, onChangeEmail] = useState("");
@@ -57,7 +57,6 @@ export default function SignUpScreen({ setToken, setId, apiUrl }) {
 
           if (response.data.token) {
             setToken(response.data.token);
-            setId(response.data.id);
             setIsLoading(false);
           }
         }

@@ -58,7 +58,7 @@ export default function HomeScreen({ apiUrl }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${apiUrl}/rooms`);
+      const response = await axios.get(`${apiUrl}/rooms?city=paris`);
       /* console.log(response.data); */
       setData(response.data);
       setIsLoading(false);

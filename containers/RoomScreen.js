@@ -17,6 +17,8 @@ import { StatusBar } from "expo-status-bar";
 import { Entypo, AntDesign } from "@expo/vector-icons";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
 
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+
 export default function RoomScreen({ apiUrl }) {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState("");
@@ -64,7 +66,7 @@ export default function RoomScreen({ apiUrl }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${apiUrl}/rooms/${params.id}`);
-        console.log(response.data);
+        /* console.log(response.data); */
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -96,7 +98,6 @@ export default function RoomScreen({ apiUrl }) {
             color="black"
             onPress={() => {
               navigation.goBack();
-              console.log("goback");
             }}
           />
           <View style={styles.logo}>
@@ -167,11 +168,22 @@ export default function RoomScreen({ apiUrl }) {
         </View>
         {viewMore === 10 && <View style={styles.separator}></View>}
         <View style={styles.mapContainer}>
-          <Image
-            style={{ height: 300 }}
-            source={require("../assets/map.jpg")}
-            resizeMode="cover"
-          />
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: 48.856614,
+              longitude: 2.3522219,
+              latitudeDelta: 0.2,
+              longitudeDelta: 0.2,
+            }}
+          >
+            <MapView.Marker
+              coordinate={{
+                latitude: data.location[1],
+                longitude: data.location[0],
+              }}
+            />
+          </MapView>
         </View>
       </SafeAreaView>
     </ScrollView>
@@ -286,6 +298,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  map: {
+    height: 300,
+    width: 400,
   },
   separator: {
     height: 120,
