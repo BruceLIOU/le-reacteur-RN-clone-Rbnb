@@ -52,6 +52,9 @@ export default function AroundMeScreen({ apiUrl }) {
 
     const fetchData = async () => {
       try {
+        /* const response = await axios.get(
+          `${apiUrl}/rooms/around?latitude=${location.coords.latitude}&longitude=${location.coords.longitude}`
+        ); */
         const response = await axios.get(`${apiUrl}/rooms/around`);
 
         /* console.log("****** AROUND ME ROOMS RESPONSE ****** ", response.data); */

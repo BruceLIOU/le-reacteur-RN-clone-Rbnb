@@ -53,7 +53,7 @@ export default function SignInScreen({ setToken, apiUrl }) {
       } catch (error) {
         setErrorMessage(true);
         console.log(error.response.data.error);
-        console.log(Object.keys(error.response.data));
+        /* console.log(Object.keys(error.response.data)); */
       }
     } else {
       setEmptyFields(true);

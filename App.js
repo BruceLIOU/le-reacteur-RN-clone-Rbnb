@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons, Feather } from "@expo/vector-icons";
+import { Ionicons, Feather, AntDesign } from "@expo/vector-icons";
 import HomeScreen from "./containers/HomeScreen";
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
@@ -20,7 +20,10 @@ const apiUrl = "https://express-airbnb-api.herokuapp.com";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState(null);
+  const [userId, setUserId] = useState(AsyncStorage.getItem("userId") || null);
+  const [userToken, setUserToken] = useState(
+    AsyncStorage.getItem("userToken") || null
+  );
 
   const setToken = async (token) => {
     if (token) {
@@ -32,16 +35,28 @@ export default function App() {
     setUserToken(token);
   };
 
+  const setId = async (id) => {
+    if (id) {
+      AsyncStorage.setItem("userId", id);
+    } else {
+      AsyncStorage.removeItem("userId");
+    }
+
+    setUserId(id);
+  };
+
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       // We should also handle error for production apps
       const userToken = await AsyncStorage.getItem("userToken");
+      const userId = await AsyncStorage.getItem("userId");
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
       setIsLoading(false);
       setUserToken(userToken);
+      setUserId(userId);
     };
 
     bootstrapAsync();
@@ -53,10 +68,14 @@ export default function App() {
         // No token found, user isn't signed in
         <Stack.Navigator>
           <Stack.Screen name="SignIn" options={{ headerShown: false }}>
-            {() => <SignInScreen setToken={setToken} apiUrl={apiUrl} />}
+            {() => (
+              <SignInScreen setId={setId} setToken={setToken} apiUrl={apiUrl} />
+            )}
           </Stack.Screen>
           <Stack.Screen name="SignUp" options={{ headerShown: false }}>
-            {() => <SignUpScreen setToken={setToken} apiUrl={apiUrl} />}
+            {() => (
+              <SignUpScreen setId={setId} setToken={setToken} apiUrl={apiUrl} />
+            )}
           </Stack.Screen>
         </Stack.Navigator>
       ) : (
@@ -100,14 +119,6 @@ export default function App() {
                       >
                         {() => <RoomScreen apiUrl={apiUrl} />}
                       </Stack.Screen>
-                      <Stack.Screen
-                        name="Profile"
-                        options={{
-                          title: "User Profile",
-                        }}
-                      >
-                        {() => <ProfileScreen setToken={setToken} />}
-                      </Stack.Screen>
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
@@ -136,8 +147,40 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-
                 <Tab.Screen
+                  name="Profile"
+                  options={{
+                    tabBarLabel: "My profile",
+                    headerShown: false,
+                    tabBarIcon: ({ color, size }) => (
+                      <AntDesign name={"user"} size={size} color={color} />
+                    ),
+                  }}
+                >
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="Profile"
+                        options={{
+                          headerShown: false,
+                          title: "My profile",
+                          tabBarLabel: "Profile",
+                        }}
+                      >
+                        {() => (
+                          <ProfileScreen
+                            setToken={setToken}
+                            userToken={userToken}
+                            setId={setId}
+                            userId={userId}
+                            apiUrl={apiUrl}
+                          />
+                        )}
+                      </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+                {/*                 <Tab.Screen
                   name="Settings"
                   options={{
                     tabBarLabel: "Settings",
@@ -163,7 +206,7 @@ export default function App() {
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
-                </Tab.Screen>
+                </Tab.Screen> */}
               </Tab.Navigator>
             )}
           </Stack.Screen>
