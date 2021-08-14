@@ -15,7 +15,7 @@ import { StatusBar } from "expo-status-bar";
 import * as Location from "expo-location";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
-export default function AroundMeScreen({ apiUrl }) {
+export default function AroundMeScreen({ /* userId, */ apiUrl }) {
   const [data, setData] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -24,6 +24,7 @@ export default function AroundMeScreen({ apiUrl }) {
 
   const navigation = useNavigation();
 
+  /*   console.log(userId); */
   useEffect(() => {
     const getPermission = async () => {
       try {

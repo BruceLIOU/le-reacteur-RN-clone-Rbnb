@@ -18,10 +18,10 @@ import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 
 export default function ProfileScreen({
   userId,
-  setId,
   userToken,
   setToken,
   apiUrl,
+  setId,
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -35,8 +35,6 @@ export default function ProfileScreen({
   const [userNameExist, setUserNameExist] = useState(false);
 
   const [image, setImage] = useState(null);
-  /*   setToken(null);
-  setId(null); */
 
   const handleSubmit = async () => {
     if (email && username && description) {
@@ -50,7 +48,6 @@ export default function ProfileScreen({
 
         if (response.data.token) {
           setToken(response.data.token);
-          setId(response.data.id);
           setIsLoading(false);
         }
       } catch (error) {
@@ -70,7 +67,7 @@ export default function ProfileScreen({
       setEmptyFields(true);
     }
   };
-  console.log(userId);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -81,7 +78,7 @@ export default function ProfileScreen({
         });
 
         console.log("Data Profile : ", response.data);
-        /*         setaData(response.data);
+        /*         /*         setaData(response.data);
         {
           response.data.photo && setPicture(response.data.photo[0].url);
         }
@@ -116,10 +113,10 @@ export default function ProfileScreen({
         <View style={styles.accountContainer}>
           <View style={styles.imgUserContainer}>
             <View style={styles.imgUser}>
-              {data.photo.url ? (
+              {data.photo[0].url ? (
                 <Image
                   style={styles.profileImg}
-                  source={{ uri: image || data.photo.url }}
+                  source={{ uri: image || data.photo[0].url }}
                 />
               ) : (
                 <FontAwesome5
@@ -191,7 +188,6 @@ export default function ProfileScreen({
               style={styles.btnLogout}
               onPress={() => {
                 setToken(null);
-                setId(null);
               }}
             >
               <Text style={styles.btnText}>Log out</Text>

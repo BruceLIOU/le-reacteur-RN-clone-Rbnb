@@ -21,7 +21,7 @@ import LottieView from "lottie-react-native"; */
 
 export default function HomeScreen({ apiUrl }) {
   const [selectedId, setSelectedId] = useState(null);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
 

@@ -171,42 +171,15 @@ export default function App() {
                           <ProfileScreen
                             setToken={setToken}
                             userToken={userToken}
-                            setId={setId}
-                            userId={userId}
                             apiUrl={apiUrl}
+                            userId={userId}
+                            setId={setId}
                           />
                         )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-                {/*                 <Tab.Screen
-                  name="Settings"
-                  options={{
-                    tabBarLabel: "Settings",
-                    tabBarIcon: ({ color, size }) => (
-                      <Ionicons
-                        name={"ios-options"}
-                        size={size}
-                        color={color}
-                      />
-                    ),
-                  }}
-                >
-                  {() => (
-                    <Stack.Navigator>
-                      <Stack.Screen
-                        name="Settings"
-                        options={{
-                          title: "Settings",
-                          tabBarLabel: "Settings",
-                        }}
-                      >
-                        {() => <SettingsScreen setToken={setToken} />}
-                      </Stack.Screen>
-                    </Stack.Navigator>
-                  )}
-                </Tab.Screen> */}
               </Tab.Navigator>
             )}
           </Stack.Screen>
